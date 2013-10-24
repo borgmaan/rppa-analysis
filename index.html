@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RPPA & Proportional Odds Logistic Regression Presentation</title>
+    <meta charset='utf-8'>
+    <meta content='width=1024, user-scalable=no' name='viewport'>
+    <!-- deck.js's core css -->
+    <link href="deck.js/core/deck.core.css" rel="stylesheet" type="text/css"/>
+    <!-- deck.js extension CSS files -->
+    <link href="deck.js/extensions/codemirror/deck.codemirror.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/goto/deck.goto.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/hash/deck.hash.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/menu/deck.menu.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/navigation/deck.navigation.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/scale/deck.scale.css" rel="stylesheet" type="text/css"/>
+    <link href="deck.js/extensions/status/deck.status.css" rel="stylesheet" type="text/css"/>
+    <!-- all css in the css dir: Keydown CSS, your custom CSS, and themes from deck.js -->
+    <link href="css/keydown.css" rel="stylesheet" type="text/css"/>
+    <link href="css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="css/horizontal-slide.css" rel="stylesheet" type="text/css"/>
+    <link href="css/prop-odds-pres.css" rel="stylesheet" type="text/css"/>
+    <link href="css/swiss.css" rel="stylesheet" type="text/css"/>
+    <!-- Modernizr (provided for legacy browsers) -->
+    <script src="deck.js/support/modernizr.custom.js" type="text/javascript"></script>
+  </head>
+  <body class='deck-container keydown'>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h1>Reverse Phase Protein Lysate Microarrays</h1>
+        
+        <h4><em>(and why we might not need proportional odds logistic regression models to analyze them… yet)</em></h4>
+        
+        <p>Andrew Borgman // VARI Bioinformatics Core</p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='left slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Overview</h3>
+        
+        <ol>
+        <li>What is RPPA data?
+        
+        <ul>
+        <li>A look @ some data</li>
+        <li>BN_16 project</li>
+        <li>Henry Ford work</li>
+        </ul>
+        </li>
+        <li>Analysis ideas
+        
+        <ul>
+        <li>Thoughts on statistics</li>
+        </ul>
+        </li>
+        <li>Proportional odds LR
+        
+        <ul>
+        <li>What is it?</li>
+        <li>ND_03 project</li>
+        </ul>
+        </li>
+        </ol>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>RPPA -- What is that?</h3>
+        
+        <p><img src="images/rppa-paper.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>RPPA -- What is that?</h3>
+        
+        <h4>Which wikipedia summarizes as…</h4>
+        
+        <p>Reverse phase protein array (RPPA) is a protein array designed as a micro- or nano-scaled dot-blot platform that allows measurement of protein expression levels in a large number of biological samples simultaneously in a quantitative manner when high-quality antibodies are available. <a href="http://en.wikipedia.org/wiki/Reverse_phase_protein_lysate_microarray"><em><code>(ref)</code></em></a></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>RPPA -- What is that?</h3>
+        
+        <h4>Then, they linked me to this really cool video…</h4>
+        
+        <p><img src="images/video-fail.png" alt="RPPA" /></p>
+        
+        <p><code>But I was paywalled :(</code></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='left slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>RPPA -- What is that?</h3>
+        
+        <ul>
+        <li><em>"Microarray for proteins"</em>
+        
+        <ul>
+        <li>Another 'omics source</li>
+        <li>Gives you post-translational info you can't get w/ mRNA expression</li>
+        <li>Benefits for informing on treatment</li>
+        </ul>
+        </li>
+        <li>Becoming increasingly high-throughput
+        
+        <ul>
+        <li>100s-1,000s of spots per array</li>
+        <li>Multiplexing <code>SAMPLE X PROTEIN</code> is common</li>
+        </ul>
+        </li>
+        <li>Data coming out of GM is normalized
+        
+        <ul>
+        <li>Normalizing image data is where most research has been</li>
+        <li>Just like microarrays in the early stages</li>
+        </ul>
+        </li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Our data</h3>
+        
+        <h4>Henry Ford Collaboration</h4>
+        
+        <p><code>70 antibodies/proteins X 120 lysates/samples</code></p>
+        
+        <hr />
+        
+        <h4>BN_16 project</h4>
+        
+        <p><code>148 antibodies/proteins X 45 lysates/samples</code></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='left slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>HF Data</h3>
+        
+        <h4>A note from Claudius:</h4>
+        
+        <blockquote><p>That is correct - the data can be used "as is". All values have been negative control subtracted, filtered for quality (spot replicate CV's etc. - that is why some values are missing) and normalized by total protein input. The later endpoints are faced with increasing data noise due to the amount of lysate that was available for printing. We had initially planned for 50 slides, so anything beyond is stretching the input. That doesn't mean the data is no good - but you will see more values missing</p></blockquote>
+        
+        <p><img src="images/all-prots-hf.svg" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>HF Data</h3>
+        
+        <ul>
+        <li><h4>Strange "data bars", evidence of outlier data points</h4></li>
+        <li><h4>Transfermation could help outliers</h4></li>
+        </ul>
+        
+        
+        <p><img src="images/all-prots-hf-2.svg" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>HF Data</h3>
+        
+        <h4>These are microarrys.. log2 them!</h4>
+        
+        <p><img src="images/all-logged-prots-hf.svg" alt="RPPA" />
+        * <code>Still have outlier issues… are they better?</code><br/>
+        * <code>Could potentially get "tricked" by your statistics</code><br/>
+        * <code>Dependent on sample size/how your sample is stratified</code></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>BN Data</h3>
+        
+        <ul>
+        <li><h4>Pretty much the same story</h4></li>
+        <li><h4>But his is noisier</h4></li>
+        </ul>
+        
+        
+        <p><img src="images/bn-all-prots-hf-2.svg" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>So, how do we analyze it...</h2>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='left slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>RPPA Statistics</h3>
+        
+        <ul>
+        <li>Need to do something to mitigate outlier issues
+        
+        <ul>
+        <li>Mann-Whitney U Test/Kruskal Wallis Test?</li>
+        <li>Permutation testing? (<em>I like this more and more</em>)</li>
+        <li>Dave's quantile normalization technique?</li>
+        <li>Which gives you more power <em>and</em> is most robust? We could find out.</li>
+        </ul>
+        </li>
+        <li>Was this ever discussed when microarrays came out?
+        
+        <ul>
+        <li>What did that early data look like?</li>
+        <li>I'm assuming those normalization procedures were developed for a reason</li>
+        <li>Just apply the same things here?</li>
+        </ul>
+        </li>
+        </ul>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h2>But I thought we were talking about proportional odds logistic regression?</h2>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>ND_03 Project</h3>
+        
+        <ul>
+        <li><h4>Contacted to do a power analysis on some new data</h4></li>
+        <li><h4>Interested in adding to their <em>count</em> of significant cytokines</h4></li>
+        </ul>
+        
+        
+        <p><img src="images/dues.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Statistical Concerns</h3>
+        
+        <p><img src="images/issues-1.png" alt="RPPA" />
+        <img src="images/issues-2.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Statistical Concerns</h3>
+        
+        <p><img src="images/issues-3.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Statistical Concerns</h3>
+        
+        <p><img src="images/cyto-exprs-prefilt.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Statistical Concerns</h3>
+        
+        <p><img src="images/issues-4.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Simulation Results</h3>
+        
+        <p><img src="images/power_plot.png" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='dark-slide slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h3>Who are we arguing to?</h3>
+        
+        <p><img src="images/book.jpg" alt="RPPA" /></p>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <section class='slide'>
+      <div class='spacer top'></div>
+      <div class='content'>
+        <h1>Thanks.</h1>
+        
+        <h4>Made with <a href="http://github.com/infews/keydown">Keydown</a></h4>
+      </div>
+      <div class='spacer bottom'></div>
+    </section>
+    <!-- deck.js navigation extension -->
+    <a class='deck-prev-link' href='#' title='Previous'>&#8592;</a>
+    <a class='deck-next-link' href='#' title='Next'>&#8594;</a>
+    <!-- deck.js hash extension -->
+    <a class='deck-permalink' href='.' title='Permalink to this slide'>#</a>
+    <!-- deck.js status extension -->
+    <p class='deck-status'>
+      <span class='deck-status-current'></span>
+      /
+      <span class='deck-status-total'></span>
+    </p>
+    <!-- jQuery & deck.js -->
+    <script src="deck.js/support/jquery.1.6.4.min.js" type="text/javascript"></script>
+    <script src="deck.js/core/deck.core.js" type="text/javascript"></script>
+    <!-- deck.js extension JS files -->
+    <script src="deck.js/extensions/codemirror/codemirror.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/deck.codemirror.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/clike/clike.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/clojure/clojure.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/coffeescript/coffeescript.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/css/css.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/diff/diff.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/haskell/haskell.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/htmlmixed/htmlmixed.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/javascript/javascript.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/lua/lua.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/php/php.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/plsql/plsql.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/python/python.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/r/r.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/rst/rst.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/ruby/ruby.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/scheme/scheme.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/smalltalk/smalltalk.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/sparql/sparql.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/stex/stex.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/velocity/velocity.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/xml/xml.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/xmlpure/xmlpure.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/codemirror/mode/yaml/yaml.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/goto/deck.goto.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/hash/deck.hash.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/menu/deck.menu.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/navigation/deck.navigation.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/scale/deck.scale.js" type="text/javascript"></script>
+    <script src="deck.js/extensions/status/deck.status.js" type="text/javascript"></script>
+    <!-- your custom JS here, including call to initialize deck.js-codemirror -->
+    <script src="js/prop-odds-pres.js" type="text/javascript"></script>
+    <!-- Initialize the deck. -->
+    <script type='text/javascript'>
+      $(function() { $.deck('.slide'); });
+    </script>
+  </body>
+</html>
