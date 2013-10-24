@@ -17,7 +17,6 @@ library(reshape2)
 dat = read.table(str_c(.data_dir, "bn-16-rppa.tsv"), header=T, sep="\t", check.names=F, strip.white=T, as.is=T, stringsAsFactors=F)
 hf = read.table(str_c(.data_dir, "hf-rppa.tsv"), header=T, sep="\t", check.names=F, strip.white=T, as.is=T, stringsAsFactors=F)
 
-
 # Melt it!
 melted = melt(data=hf, id.vars=c("Samples", "Sample description"))
 
@@ -52,7 +51,7 @@ p2 = ggplot(data=melted, aes(x=variable, y=value, fill=variable)) +
   long_theme
 
 p3 = ggplot(data=melted, aes(x=variable, y=value, fill=variable)) + 
-  geom_boxplot(outlier.size=2.5) + ylim(0,20000) + 
+  geom_boxplot(outlier.size=2.5) + ylim(0,500) + 
   labs(title="Zoomed!", ylab="Expresion Level") + 
   long_theme
 

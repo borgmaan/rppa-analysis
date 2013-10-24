@@ -84,7 +84,7 @@ Reverse phase protein array (RPPA) is a protein array designed as a micro- or na
 
 #### These are microarrys.. log2 them!
 ![RPPA](images/all-logged-prots-hf.svg)
-* `Still have outlier issues, but they are much better`  
+* `Still have outlier issues… are they better?`  
 * `Could potentially get "tricked" by your statistics`  
 * `Dependent on sample size/how your sample is stratified`
 
@@ -115,20 +115,53 @@ Reverse phase protein array (RPPA) is a protein array designed as a micro- or na
 
 !SLIDE dark-slide
 
-## So, how do we analyze it...
-#### [simulation pending]
+## But I thought we were talking about proportional odds logistic regression?
 
 !SLIDE dark-slide
+### ND_03 Project
+
+* #### Contacted to do a power analysis on some new data
+* #### Interested in adding to their *count* of significant cytokines
+
+![RPPA](images/dues.png)
+
+!SLIDE
+### Statistical Concerns
+
+![RPPA](images/issues-1.png)
+![RPPA](images/issues-2.png)
+
+!SLIDE
+### Statistical Concerns
+
+![RPPA](images/issues-3.png)
+
+!SLIDE
+### Statistical Concerns
+
+![RPPA](images/cyto-exprs-prefilt.png)
+
+!SLIDE
+
+### Statistical Concerns
+
+![RPPA](images/issues-4.png)
+
+!SLIDE dark-slide
+
+### Simulation Results
+
+![RPPA](images/power_plot.png)
+
+!SLIDE dark-slide
+
 ### Who are we arguing to?
 ![RPPA](images/book.jpg)
-#### And, how conservative to we want to be?
 
 
 !SLIDE
 
 # Thanks.
-
-### [@dwfrank](http://twitter.com/dwfrank) | [infews](http://github.com/infews) on Github
 
 #### Made with [Keydown](http://github.com/infews/keydown)
 
