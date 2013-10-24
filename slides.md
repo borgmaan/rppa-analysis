@@ -49,6 +49,9 @@ Reverse phase protein array (RPPA) is a protein array designed as a micro- or na
 * Becoming increasingly high-throughput
 	* 100s-1,000s of spots per array
 	* Multiplexing `SAMPLE X PROTEIN` is common
+* Data coming out of GM is normalized
+	* Normalizing image data is where most research has been
+	* Just like microarrays in the early stages
 
 !SLIDE dark-slide
 ### Our data
