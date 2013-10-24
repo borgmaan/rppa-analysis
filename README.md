@@ -1,4 +1,3 @@
 ## VARI BBC RIP/JC -- 10/24/2013
 
-http://infews.github.io/keydown/#slide-5
-
+Presentation talking about how to analyze RPPA data. See it in action here: http://borgmaan.github.io/rppa-analysis/
