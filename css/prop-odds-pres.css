@@ -10,3 +10,25 @@
 /*.deck-status {*/
     /*display: none;*/
 /*}*/
+
+
+/*------------------- Slide 1 -------------------*/
+
+.slide.dark-slide .content h1 {
+	text-align:center;
+}
+
+
+.slide.dark-slide .content h4 {
+	text-align:center;
+	color: #4b0082;
+	font-style: italic;
+}
+
+.slide.dark-slide .content p {
+	text-align:center;
+	color: ##B0B0B0;
+	font-style: italic;
+}
+
+/*----------------------------------------------*/
